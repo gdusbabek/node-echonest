@@ -1,6 +1,6 @@
 module.exports =
   'bogusVersion':
-    'fake,endpoint': 'get'
+    'fake/endpoint': 'get'
 
   'v4':
     'song/search': 'get'
@@ -34,7 +34,6 @@ module.exports =
 
     'playlist/basic': 'get'
     'playlist/static': 'get'
-    #'playlist/dynamic': 'get'
     'playlist/dynamic/create': 'get'
     'playlist/dynamic/restart': 'get'
     'playlist/dynamic/next': 'get'
