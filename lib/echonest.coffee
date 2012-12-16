@@ -24,16 +24,23 @@ class echonest.Echonest
     @jsonclient = fermata.json(@host)['api'][@api_version](api_key: @api_key)
     api = echonest_api[@api_version]
     for endpoint, httpmethod of api
-      # echonest is always just /type/method
-      [type, method] = endpoint.split('/')
+      # echonest is always just /type/method, where method may contain slashes.
+      #[type, method] = endpoint.split('/')
+      [type, methods] = [endpoint.substring(0, endpoint.indexOf('/')), endpoint.substring(endpoint.indexOf('/') + 1).split('/')]
       @[type] ?= {}
-      @[type][method] ?= do (endpoint, httpmethod) =>
-        (query, callback) =>
-          if not options.rate_limit
-            @request(endpoint, query, callback, httpmethod)
-          else
-            @rateLimiter.addTask =>
-              @request(endpoint, query, callback, httpmethod)
+      pointer = @[type]
+      for part in methods
+        if part == methods[methods.length - 1]
+          pointer[part] ?= do (endpoint, httpmethod) =>
+            (query, callback) =>
+              if not options.rate_limit
+                @request(endpoint, query, callback, httpmethod)
+              else
+                @rateLimiter.addTask =>
+                  @request(endpoint, query, callback, httpmethod)
+        else    
+          pointer[part] ?= {}
+        pointer = pointer[part]
 
   defaultCallback: (err, data) ->
     console.log 'err: ', err

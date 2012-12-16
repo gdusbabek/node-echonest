@@ -30,26 +30,19 @@ vows.describe('playlist methods').addBatch({
       'we see no errors': checkErrors
     "to create a dynamic artist-radio playlist from behold... the arctopus":
       topic: (nest) ->
-        nest.playlist.dynamic {
+        nest.playlist.dynamic.create {
           artist: "behold... the arctopus"
           type: "artist-radio"
         }, @callback
         undefined
-      'i get a tune': (err, response) ->
-        assert.ok response.songs.length == 1
+      'i get a session id': (err, response) ->
+        assert.ok response.session_id != null
       'I can resume my session':
         topic: (response, nest) ->
-          nest.playlist.dynamic {
+          nest.playlist.dynamic.restart {
             session_id: response.session_id
           }, @callback
-        'and get another tune': (err, response) ->
-          assert.ok response.songs.length == 1
-      'I can get session_info on my session':
-        topic: (response, nest) ->
-          nest.playlist.session_info {
-            session_id: response.session_id
-          }, @callback
-        'and there are no skipped songs': (err, response) ->
-          assert.isEmpty response.skipped_songs
+        'and get still get a session id': (err, response) ->
+          assert.ok response.session_id != null
       'we see no errors': checkErrors
 }).export module
