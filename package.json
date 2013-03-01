@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "private": false,
   "dependencies": {
-    "fermata": "",
+    "fermata": "git://github.com/gdusbabek/fermata.git#375fd4096111a199d9dc4d34208ea2b862989761",
     "underscore": ""
   },
   "devDependencies": {

@@ -52,11 +52,13 @@ class echonest.Echonest
     if method == 'get'
       client = client(query)
     # console.log client() # to show url
-    wrapper = (err, result) =>
+    wrapper = (err, result, meta) =>
       callback ?= @defaultCallback
       # pluck response
       if result?.response?
         result = result.response
+      if meta
+        result._httpMeta = meta
       # put echonest status in the error
       if err and result
         err = new Error (err + ': ' + JSON.stringify result)
